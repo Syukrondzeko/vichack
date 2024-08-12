@@ -1,0 +1,2 @@
+# ffmpeg -i dataset/my_recording.m4a dataset/my_recording.wav
+# curl -X POST "http://localhost:8000/transcribe/" -F "file=@models/dataset/my_recording.wav"

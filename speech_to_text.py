@@ -1,50 +1,53 @@
-import sounddevice as sd
+from fastapi import FastAPI, UploadFile, File, HTTPException
 import vosk
+import wave
 import json
-import queue
+import os
+from fastapi.responses import JSONResponse
 
-def listen_and_convert_to_text():
-    model_path = 'models/vosk-model-small-en-us-0.15'
-    vosk_model = vosk.Model(model_path)
+app = FastAPI()
 
-    q = queue.Queue()
+# Load the Vosk model once to avoid reloading it for each request
+model_path = 'models/vosk-model-small-en-us-0.15'
+if not os.path.exists(model_path):
+    raise FileNotFoundError(f"Model path '{model_path}' not found.")
+vosk_model = vosk.Model(model_path)
 
-    def callback(indata, frames, time, status):
-        """This is called (from a separate thread) for each audio block."""
-        if status:
-            print(f"SoundDevice status: {status}")
-        q.put(bytes(indata))
+@app.post("/transcribe/")
+async def transcribe(file: UploadFile = File(...)):
+    # Check if the uploaded file is a WAV file
+    if not file.filename.endswith(".wav"):
+        raise HTTPException(status_code=400, detail="Only WAV files are supported.")
 
-    # Use the default input device parameters
-    samplerate = int(sd.query_devices(kind='input')['default_samplerate'])
-    channels = 1
+    # Save the uploaded file temporarily
+    temp_file_path = f"temp_{file.filename}"
+    with open(temp_file_path, "wb") as buffer:
+        buffer.write(await file.read())
 
-    # Start the audio stream and process the data
+    # Open the WAV file and process it
     try:
-        with sd.RawInputStream(samplerate=samplerate, blocksize=8000, dtype='int16',
-                               channels=channels, callback=callback):
-            print("Please say something...")
-            sd.sleep(5000)  # Record for 5 seconds
+        with wave.open(temp_file_path, "rb") as wf:
+            # Check if the WAV file has the expected format
+            if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != 'NONE':
+                raise HTTPException(status_code=400, detail="Audio file must be WAV format mono PCM.")
 
-            # Collect all recorded data
-            audio_data = b''.join(list(q.queue))
+            # Initialize the recognizer with the sample rate from the WAV file
+            recognizer = vosk.KaldiRecognizer(vosk_model, wf.getframerate())
 
-            # Initialize the recognizer
-            recognizer = vosk.KaldiRecognizer(vosk_model, samplerate)
+            # Read the audio data and process it
+            while True:
+                data = wf.readframes(4000)  # Read data in chunks
+                if len(data) == 0:
+                    break
+                recognizer.AcceptWaveform(data)
 
-            # Process the accumulated audio data
-            if recognizer.AcceptWaveform(audio_data):
-                result = recognizer.Result()
-                text = json.loads(result).get("text", "")
-                print(f"You said: {text}")
-                return text
-            else:
-                print("Sorry, could not process the audio.")
-                return None
+            # Get the final result
+            final_result = recognizer.FinalResult()
+            text = json.loads(final_result).get("text", "")
+            return JSONResponse(content={"recognized_text": text})
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        return None
-
-# Example usage
-if __name__ == "__main__":
-    text_output = listen_and_convert_to_text()
+        raise HTTPException(status_code=500, detail=f"An error occurred while processing the file: {str(e)}")
+    finally:
+        # Clean up the temporary file
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
