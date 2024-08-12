@@ -1,2 +1,26 @@
-# ffmpeg -i dataset/my_recording.m4a dataset/my_recording.wav
-# curl -X POST "http://localhost:8000/transcribe/" -F "file=@models/dataset/my_recording.wav"
+# Convert from mp4 to wav
+ffmpeg -i dataset/my_recording.m4a dataset/my_recording.wav
+
+# Run fastapi endpoint
+uvicorn app:app --reload
+
+# Example request
+curl -X POST "http://localhost:8000/greet/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_mood_request": "I am feeling great today!"}'
+
+
+curl -X POST "http://localhost:8000/ask_menu/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_menu_request": "I want mozarella pizza."}'
+
+curl -X POST "http://localhost:8000/ask_quantity/" \
+     -H "Content-Type: application/json" \
+     -d '{"menu": "pizza", "user_quantity_request": "I would like to order 3 boxes."}'
+
+curl -X POST "http://localhost:8000/end_chat/" \
+     -H "Content-Type: application/json" \
+     -d '{"is_end_chat": "I have no more questions."}'
+
+curl -X POST "http://localhost:8000/transcribe/" \
+     -F "file=@models/dataset/my_recording.wav"
