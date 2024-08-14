@@ -9,7 +9,6 @@ curl -X POST "http://localhost:8000/greet/" \
      -H "Content-Type: application/json" \
      -d '{"user_mood_request": "I am feeling great today!"}'
 
-
 curl -X POST "http://localhost:8000/ask_menu/" \
      -H "Content-Type: application/json" \
      -d '{"user_menu_request": "I want mozarella pizza."}'
@@ -20,7 +19,33 @@ curl -X POST "http://localhost:8000/ask_quantity/" \
 
 curl -X POST "http://localhost:8000/end_chat/" \
      -H "Content-Type: application/json" \
-     -d '{"is_end_chat": "I have no more questions."}'
+     -d '{"is_end_chat": "I have no more order."}'
 
 curl -X POST "http://localhost:8000/transcribe/" \
      -F "file=@models/dataset/my_recording.wav"
+
+curl -X GET "http://localhost:8000/available_menu/"
+
+curl -X POST "http://127.0.0.1:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "What menu that you have?"}'      
+
+curl -X POST "http://127.0.0.1:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "I want mozarella pizza."}'        
+
+curl -X POST "http://127.0.0.1:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "I would like to order 3 boxes"}'        
+
+curl -X POST "http://localhost:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "I want to delete the chicken."}'
+
+curl -X POST "http://localhost:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "How much expensive is spagethi?"}'
+
+curl -X POST "http://127.0.0.1:8000/ask_price/" \
+     -H "Content-Type: application/json" \
+     -d '{"menu_item": "pasta"}'

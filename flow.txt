@@ -1,0 +1,16 @@
+User Open App
+Step 0: Call "greet"
+Step 1: Call "classify_intent"
+If intent == "asking_availability_menu":
+    Step 2: Giving all available List Menu
+elif intent == "order_menu":
+    Step 2.1: Call "ask_menu"
+    Step 2.2: User response
+    Step 2.3: Call "classify_intent"
+    If intent == "asking_availability_menu":
+        Step 2.4: Call "ask_quantity"
+    Step 2.4: Call "end_chat"
+    if decision == "continue":
+        go to step 2.1
+    else:
+        done

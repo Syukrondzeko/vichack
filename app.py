@@ -6,6 +6,8 @@ import wave
 import json
 import os
 from fastapi.responses import JSONResponse
+from typing import List
+import re
 
 # FastAPI initialization
 app = FastAPI()
@@ -60,6 +62,42 @@ class QuantityResponse(BaseModel):
 class EndChatRequest(BaseModel):
     is_end_chat: str
 
+class AvailableMenuResponse(BaseModel):
+    items: List[str]
+
+class ClassificationRequest(BaseModel):
+    user_input: str
+
+# Define the request and response models
+class PriceRequest(BaseModel):
+    menu_item: str
+
+class PriceResponse(BaseModel):
+    price: str
+
+
+# Predefined list of available menu items
+available_menu_items = [
+    "Spaghetti Bolognese",
+    "Creamy Alfredo",
+    "Caesar Salad",
+    "Margherita Pizza",
+    "Grilled Chicken Sandwich",
+    "Lemonade",
+    "Garlic Bread"
+]
+
+# Dictionary to store prices of menu items
+item_prices = {
+    "Spaghetti Bolognese": 12,
+    "Creamy Alfredo": 15,
+    "Caesar Salad": 10,
+    "Margherita Pizza": 14,
+    "Grilled Chicken Sandwich": 8,
+    "Lemonade": 3,
+    "Garlic Bread": 4
+}
+
 # Define the FastAPI routes
 @app.get("/")
 async def root():
@@ -100,6 +138,38 @@ async def ask_quantity(request: QuantityRequest):
 
     return QuantityResponse(quantity=quantity)
 
+# Add the endpoint to ask about the available menu
+@app.get("/available_menu/")
+async def available_menu():
+    # Join the available menu items into a readable sentence
+    menu_text = ", ".join(available_menu_items[:-1]) + ", and " + available_menu_items[-1]
+    response_text = f"We currently have {menu_text}."
+
+    return {"response": response_text}
+
+@app.post("/ask_price/", response_model=PriceResponse)
+async def ask_price(request: PriceRequest):
+    global qa_pipeline
+
+    load_qa_pipeline()
+
+    # Extract the menu item using the question-answer pipeline
+    menu_item = ask_question(request.menu_item, "What menu item is being asked about?")
+    menu_item = menu_item.strip().lower()
+
+    # Compile a case-insensitive regex pattern for each menu item
+    matches = [item for item in item_prices.keys() if re.search(menu_item, item, re.IGNORECASE)]
+
+    if matches:
+        # Take the first match found (most similar)
+        best_match = matches[0]
+        price = item_prices[best_match]
+        response = f"The price of {best_match} is {price} dollars."
+    else:
+        response = f"Sorry, we don't have {menu_item} on the menu."
+
+    return PriceResponse(price=response)
+
 @app.post("/end_chat/")
 async def order_summary(chat_request: EndChatRequest):
     global classifier
@@ -111,6 +181,30 @@ async def order_summary(chat_request: EndChatRequest):
         response = "Thank you for chatting! Have a great day!"
     else:
         response = "What else would you like to order?"
+
+    return {"response": response}
+
+@app.post("/classify_intent/")
+async def classify_intent(chat_request: ClassificationRequest):
+    global classifier
+
+    load_classifier()
+
+    user_input = chat_request.user_input.strip().lower()
+    label = classify_user_input(user_input)
+
+    if label == "asking_availability_menu":
+        response = "It seems like you're asking about the available menu items."
+    elif label == "order_menu":
+        response = "It looks like you're trying to place an order."
+    elif label == "quantity_order":
+        response = "It seems like you're specifying the quantity for your order."
+    elif label == "asking_price":
+        response = "It seems like you're asking for menu price."
+    elif label == "cancel_order":
+        response = "It seems like you want to cancel your order."
+    else:
+        response = "I'm not sure what you're asking. Could you please clarify?"
 
     return {"response": response}
 
@@ -182,3 +276,12 @@ def check_conversation_end(user_input):
     )
     label = classification_result['labels'][0]
     return label == "end conversation"
+
+def classify_user_input(user_input):
+    classification_result = classifier(
+        user_input,
+        candidate_labels=["asking_availability_menu", "asking_price", "order_menu", "quantity_order", "cancel_order"],
+        hypothesis_template="The user is {}."
+    )
+    label = classification_result['labels'][0]
+    return label
