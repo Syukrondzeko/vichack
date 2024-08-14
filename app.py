@@ -75,6 +75,12 @@ class PriceRequest(BaseModel):
 class PriceResponse(BaseModel):
     price: str
 
+class AddressRequest(BaseModel):
+    address_input: str
+
+class AddressResponse(BaseModel):
+    address: str
+
 
 # Predefined list of available menu items
 available_menu_items = [
@@ -178,7 +184,7 @@ async def order_summary(chat_request: EndChatRequest):
 
     user_input = chat_request.is_end_chat.strip().lower()
     if check_conversation_end(user_input):
-        response = "Thank you for chatting! Have a great day!"
+        response = "Thank you for ordering! Have a great day!"
     else:
         response = "What else would you like to order?"
 
@@ -203,10 +209,24 @@ async def classify_intent(chat_request: ClassificationRequest):
         response = "It seems like you're asking for menu price."
     elif label == "cancel_order":
         response = "It seems like you want to cancel your order."
+    elif label == "giving_address":
+        response = "It seems like you are giving your address."
     else:
         response = "I'm not sure what you're asking. Could you please clarify?"
 
     return {"response": response}
+
+@app.post("/giving_address/", response_model=AddressResponse)
+async def giving_address(request: AddressRequest):
+    global qa_pipeline
+
+    load_qa_pipeline()
+
+    # Extract the address using the question-answer pipeline
+    address = ask_question(request.address_input, "What is the address provided by the user?")
+    address = address.strip()
+
+    return AddressResponse(address=address)
 
 @app.post("/transcribe/")
 async def transcribe(file: UploadFile = File(...)):
@@ -280,7 +300,7 @@ def check_conversation_end(user_input):
 def classify_user_input(user_input):
     classification_result = classifier(
         user_input,
-        candidate_labels=["asking_availability_menu", "asking_price", "order_menu", "quantity_order", "cancel_order"],
+        candidate_labels=["asking_availability_menu", "asking_price", "order_menu", "quantity_order", "giving_address", "cancel_order"],
         hypothesis_template="The user is {}."
     )
     label = classification_result['labels'][0]
