@@ -92,7 +92,7 @@
 }
 
 .about-title {
-  font-size: 2.5rem;
+  font-size: 3.0rem;
   font-weight: bold; /* Make "About" bold */
   color: #333;
   font-family: 'Caveat', cursive;
@@ -120,7 +120,7 @@
 /* Menu Section */
 .menu-section {
   padding: 50px 20px;
-  background-color: #fff;
+  background-color: #e0e0e0; /* Grey background, darker than the About section */
 }
 
 .section-title {
@@ -143,13 +143,13 @@
   border: 1px solid #ddd;
   padding: 20px;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: #efefef; /* Same color as About section */
   transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .menu-item:hover {
   background-color: orange; /* Change whole box color to orange on hover */
-  border-color: orange; /* Keep the border consistent */
+  border-color: black; /* Border turns black when hovering */
 }
 
 .menu-image {
@@ -163,12 +163,13 @@
 .menu-item h3 {
   font-family: 'Cormorant Garamond', serif; 
   font-size: 1.5rem;
+  font-weight: bold; /* Make the menu item names bold */
   color: #333;
 }
 
 .menu-price {
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: bold; /* Make the price bold */
   color: #333;
 }
 
