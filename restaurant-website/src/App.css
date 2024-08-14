@@ -1,0 +1,117 @@
+/* App.css */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap');
+
+.hero {
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  text-align: center;
+  color: white;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+/* About Section */
+.about-section {
+  padding: 50px 20px;
+  background-color: #f8f9fa;
+}
+
+.about-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-images {
+  display: flex;
+  align-items: flex-start;
+  margin-right: 40px;
+}
+
+.about-image {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.about-image1 {
+  transform: translateY(-15px);
+}
+
+.about-text {
+  flex: 1;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  text-align: left;
+  max-height: 500px;
+  overflow-y: hidden;
+}
+
+.about-title-container {
+  margin-bottom: 20px; /* Ensures the titles are close to the text */
+}
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: bold; /* Make "About" bold */
+  color: #333;
+  font-family: 'Caveat', cursive;
+  margin-bottom: 0;
+}
+
+.about-subtitle {
+  font-size: 2rem;
+  color: #333;
+  font-family: 'Caveat', cursive;
+  margin-top: 0;
+  margin-bottom: 20px; /* Space between subtitle and the paragraph */
+}
+
+@media (min-width: 768px) {
+  .about-content {
+    align-items: flex-start;
+  }
+
+  .about-images {
+    margin-right: 40px;
+  }
+}
