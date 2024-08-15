@@ -10,7 +10,18 @@ from typing import List
 import re
 
 # FastAPI initialization
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+# Allow CORS for all origins (you can restrict this to specific origins if needed)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Replace with the frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the Vosk model once to avoid reloading it for each request
 model_path = 'models/vosk-model-small-en-us-0.15'

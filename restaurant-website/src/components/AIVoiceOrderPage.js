@@ -6,6 +6,7 @@ const AIVoiceOrderPage = ({ onBack }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [finalTranscript, setFinalTranscript] = useState('');
   const [recognition, setRecognition] = useState(null);
+  const [intentResponse, setIntentResponse] = useState(''); // State to store the intent classification result
 
   let transcriptBuffer = ''; // Local variable to accumulate the transcript
 
@@ -60,20 +61,20 @@ const AIVoiceOrderPage = ({ onBack }) => {
       return;
     }
 
-    fetch('http://localhost:3001/api/voice-order', {
+    // First, send the transcript to the intent classification API
+    fetch('http://localhost:8000/classify_intent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ transcript }),
+      body: JSON.stringify({ user_input: transcript }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Success:', data);
-        // You can handle further actions here based on the response from the backend
+        setIntentResponse(data.response); // Store the classification result in the state
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error('Error in classify_intent:', error);
       });
   };
 
@@ -86,6 +87,9 @@ const AIVoiceOrderPage = ({ onBack }) => {
         <div>
           <div className="transcript">
             <p>{finalTranscript}</p> {/* Show the final transcript */}
+          </div>
+          <div className="intent-response">
+            <p>{intentResponse}</p> {/* Show the intent classification result */}
           </div>
           <div className="btn-container">
             {!isRecording ? (
