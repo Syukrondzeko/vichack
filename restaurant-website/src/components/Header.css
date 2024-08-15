@@ -1,35 +1,39 @@
 /* Header.css */
 .logo {
-    width: 100px; /* Larger logo size */
-    height: auto; /* Maintain the aspect ratio */
-    margin-right: 20px; /* Space between logo and text */
-  }
-  
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-    font-size: 1.9rem; /* Font size for restaurant name */
-    font-weight: bold;
-    color: #f39c12; /* Restaurant name color */
-  }
-  
-  .navbar {
-    padding: 8px 15px; /* Padding around the navbar */
-    background-color: rgba(0, 0, 0, 0.2); /* Increased transparency to 20% */
-  }
-  
-  .nav-link {
-    font-size: 1.3rem; /* Size of navigation links */
-    margin: 0 20px; /* Spacing between navigation links */
-    color: rgba(255, 255, 255, 0.7); /* Slightly transparent text */
-  }
-  
-  .nav-link:hover {
-    color: #f39c12; /* Color change on hover */
-  }
-  
-  .btn-warning {
-    font-size: 1.2rem; /* Button size */
-    padding: 12px 24px; /* Button padding */
-  }
-  
+  width: 100px; /* Larger logo size */
+  height: auto; /* Maintain the aspect ratio */
+  margin-right: 20px; /* Space between logo and text */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.9rem; /* Font size for restaurant name */
+  font-weight: bold;
+  color: #f39c12; /* Restaurant name color */
+}
+
+.navbar {
+  padding: 8px 15px; /* Padding around the navbar */
+  background-color: rgba(0, 0, 0, 0.2); /* Increased transparency to 20% */
+}
+
+.navbar-nav {
+  margin-left: auto; /* Push the nav links to the right */
+  margin-right: 15px; /* Adjust margin to the right for alignment */
+}
+
+.nav-link {
+  font-size: 1.3rem; /* Size of navigation links */
+  margin: 0 20px; /* Spacing between navigation links */
+  color: rgba(255, 255, 255, 0.7); /* Slightly transparent text */
+}
+
+.nav-link:hover {
+  color: #f39c12; /* Color change on hover */
+}
+
+.btn-warning {
+  font-size: 1.2rem; /* Button size */
+  padding: 12px 24px; /* Button padding */
+}
