@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header'; // Import the Header component
+import SuccessPage from './SuccessPage'; // Import the SuccessPage component
 import './OnlineOrderPage.css'; // Import the OnlineOrderPage CSS
 
 const OnlineOrderPage = ({ onBack }) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here
+    setIsSubmitted(true); // Set the state to true to navigate to the success page
   };
+
+  if (isSubmitted) {
+    return <SuccessPage onBack={onBack} />;
+  }
 
   return (
     <div>
