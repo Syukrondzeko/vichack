@@ -62,6 +62,20 @@ app.get('/api/menu', (req, res) => {
   });
 });
 
+// Endpoint to handle voice order transcript
+app.post('/api/voice-order', (req, res) => {
+  const { transcript } = req.body;
+  console.log('Received transcript:', transcript);
+
+  // Here you can process the transcript further,
+  // such as parsing the order, saving it to the database, etc.
+
+  // For example, you could parse the transcript to match menu items and quantities
+  // and save the parsed order to your SQLite database.
+
+  res.status(200).json({ message: 'Transcript received successfully', transcript });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

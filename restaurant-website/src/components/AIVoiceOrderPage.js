@@ -4,8 +4,10 @@ import './AIVoiceOrderPage.css';
 
 const AIVoiceOrderPage = ({ onBack }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState('');
+  const [finalTranscript, setFinalTranscript] = useState('');
   const [recognition, setRecognition] = useState(null);
+
+  let transcriptBuffer = ''; // Local variable to accumulate the transcript
 
   const startRecording = () => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -21,21 +23,21 @@ const AIVoiceOrderPage = ({ onBack }) => {
 
     recognitionInstance.onstart = () => {
       setIsRecording(true);
-      setTranscript(''); // Clear transcript when starting a new recording
+      transcriptBuffer = ''; // Clear the buffer when starting a new recording
     };
 
     recognitionInstance.onresult = (event) => {
-      let finalTranscript = '';
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript;
+          transcriptBuffer += event.results[i][0].transcript;
         }
       }
-      setTranscript(finalTranscript);
     };
 
     recognitionInstance.onend = () => {
       setIsRecording(false);
+      setFinalTranscript(transcriptBuffer); // Update state with the full transcript
+      sendTranscriptToBackend(transcriptBuffer); // Send the transcript after stopping
     };
 
     recognitionInstance.onerror = (event) => {
@@ -52,6 +54,29 @@ const AIVoiceOrderPage = ({ onBack }) => {
     }
   };
 
+  const sendTranscriptToBackend = (transcript) => {
+    if (!transcript) {
+      console.warn('Transcript is empty, nothing to send.');
+      return;
+    }
+
+    fetch('http://localhost:3001/api/voice-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ transcript }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+        // You can handle further actions here based on the response from the backend
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
+
   return (
     <div>
       <Header showNavLinks={false} />
@@ -60,7 +85,7 @@ const AIVoiceOrderPage = ({ onBack }) => {
         <p>Press the button below to begin recording your order.</p>
         <div>
           <div className="transcript">
-            <p>{transcript}</p> {/* Show the final transcript */}
+            <p>{finalTranscript}</p> {/* Show the final transcript */}
           </div>
           <div className="btn-container">
             {!isRecording ? (
