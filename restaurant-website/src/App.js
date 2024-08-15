@@ -31,10 +31,8 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <section
-        className="hero"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
+      
+      <section id="home" className="hero" style={{ backgroundImage: `url(${backgroundImage})` }}>
         <div className="overlay"></div>
         <div className="hero-content text-center text-white">
           <h1>Enjoy Our Delicious Meal</h1>
