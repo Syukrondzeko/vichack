@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import BookingPage from './BookingPage'; // Import the BookingPage component
 import './App.css';
 import backgroundImage from './assets/images/background.jpg';
 import image1 from './assets/images/about_restaurant_1.jpg';
@@ -7,6 +8,7 @@ import image2 from './assets/images/about_restaurant_2.jpg';
 
 function App() {
   const [menuItems, setMenuItems] = useState([]);
+  const [showBookingPage, setShowBookingPage] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3001/api/menu')
@@ -28,16 +30,32 @@ function App() {
       });
   }, []);
 
+  const handleBookingClick = () => {
+    setShowBookingPage(true);
+  };
+
+  const handleBackToHome = () => {
+    setShowBookingPage(false);
+  };
+
+  if (showBookingPage) {
+    return <BookingPage onBack={handleBackToHome} />;
+  }
+
   return (
     <div className="App">
       <Header />
-      
-      <section id="home" className="hero" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <section
+        className="hero"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
         <div className="overlay"></div>
         <div className="hero-content text-center text-white">
           <h1>Enjoy Our Delicious Meal</h1>
           <p>Experience the best dining with us.</p>
-          <a href="#booking" className="btn btn-warning">Book a Table</a>
+          <button onClick={handleBookingClick} className="btn btn-warning">
+            Book a Table
+          </button>
         </div>
       </section>
 
