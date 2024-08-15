@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import BookingPage from './BookingPage'; // Import the BookingPage component
+import BookingPage from './components/BookingPage'; // Import the BookingPage component
 import './App.css';
 import backgroundImage from './assets/images/background.jpg';
 import image1 from './assets/images/about_restaurant_1.jpg';

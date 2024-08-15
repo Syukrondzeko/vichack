@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Header from './components/Header'; // Import the Header component
-import SuccessPage from './components/SuccessPage'; // Import the SuccessPage component from components folder
+import Header from './Header'; // Import the Header component
+import SuccessPage from './SuccessPage'; // Import the SuccessPage component from components folder
 import './BookingPage.css'; // Import the BookingPage CSS
 
 const BookingPage = ({ onBack }) => {
@@ -41,7 +41,7 @@ const BookingPage = ({ onBack }) => {
           </div>
           <div className="form-group">
             <label htmlFor="time">Time:</label>
-            <input type="time" className="form-control" id="time" required />
+            <input type="text" className="form-control" id="time" placeholder="1:30 PM" required />
           </div>
           <div className="form-group">
             <label htmlFor="guests">Number of Guests:</label>
