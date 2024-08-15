@@ -1,59 +1,39 @@
-/* BookingPage.css */
+/* AIVoiceOrderPage.css */
 
-.booking-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .booking-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #333;
-    font-family: 'Caveat', cursive;
-    font-weight: bold;
-  }
-  
-  .booking-form p {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 30px;
-  }
-  
-  .booking-form .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .booking-form label {
-    font-weight: bold;
-  }
-  
-  .booking-form .form-control {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-  }
-  
-  .booking-form .btn-container {
-    text-align: center;
-    margin-top: 30px;
-  }
-  
-  .booking-form .btn-success {
-    padding: 10px 20px;
-  }
-  
-  .booking-form .btn-danger {
-    padding: 10px 20px;
-  }
-  
-  .booking-form .mr-2 {
-    margin-right: 10px;
-  }
-  
-  .booking-form .ml-2 {
-    margin-left: 10px;
-  }
-  
+.ai-voice-order-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.ai-voice-order-container h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: 'Caveat', cursive;
+  font-weight: bold;
+}
+
+.ai-voice-order-container p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.sound-wave {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 400px;
+  height: 100px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+}

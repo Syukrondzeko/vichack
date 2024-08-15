@@ -25,3 +25,16 @@
     padding: 10px
     20px;
 }  
+
+.transcript {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    text-align: left;
+  }
+  
