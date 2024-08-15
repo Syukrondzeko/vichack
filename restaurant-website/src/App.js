@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import BookingPage from './components/BookingPage'; // Import the BookingPage component
+import BookingPage from './components/BookingPage';
+import OnlineOrderPage from './components/OnlineOrderPage';
 import './App.css';
 import backgroundImage from './assets/images/background.jpg';
 import image1 from './assets/images/about_restaurant_1.jpg';
@@ -8,7 +9,7 @@ import image2 from './assets/images/about_restaurant_2.jpg';
 
 function App() {
   const [menuItems, setMenuItems] = useState([]);
-  const [showBookingPage, setShowBookingPage] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
     fetch('http://localhost:3001/api/menu')
@@ -31,20 +32,24 @@ function App() {
   }, []);
 
   const handleBookingClick = () => {
-    setShowBookingPage(true);
+    setCurrentPage('booking');
   };
 
   const handleBackToHome = () => {
-    setShowBookingPage(false);
+    setCurrentPage('home');
   };
 
-  if (showBookingPage) {
+  if (currentPage === 'booking') {
     return <BookingPage onBack={handleBackToHome} />;
+  }
+
+  if (currentPage === 'online-order') {
+    return <OnlineOrderPage onBack={handleBackToHome} />;
   }
 
   return (
     <div className="App">
-      <Header />
+      <Header setCurrentPage={setCurrentPage} /> {/* Pass setCurrentPage to Header */}
       <section
         className="hero"
         style={{ backgroundImage: `url(${backgroundImage})` }}

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
 import logo from '../assets/images/logo.png'; // Make sure the path is correct
 
-const Header = ({ showNavLinks = true }) => {
+const Header = ({ showNavLinks = true, setCurrentPage }) => {
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,6 +30,9 @@ const Header = ({ showNavLinks = true }) => {
                   </li>
                   <li className="nav-item">
                     <a className="nav-link" href="#contact">Contact</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#" onClick={() => setCurrentPage('online-order')}>Online Order</a> {/* New NavLink */}
                   </li>
                 </ul>
               </div>
