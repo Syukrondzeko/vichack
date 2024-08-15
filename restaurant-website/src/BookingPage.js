@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header'; // Import the Header component
+import SuccessPage from './components/SuccessPage'; // Import the SuccessPage component from components folder
 import './BookingPage.css'; // Import the BookingPage CSS
 
 const BookingPage = ({ onBack }) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setIsSubmitted(true); // Set the state to true to navigate to the success page
+  };
+
+  if (isSubmitted) {
+    return <SuccessPage onBack={onBack} />;
+  }
+
   return (
     <div>
       <Header showNavLinks={false} /> {/* Show header without navigation links */}
@@ -10,7 +22,7 @@ const BookingPage = ({ onBack }) => {
         <h2 className="booking-title">Book a Table</h2>
         <p>Please fill out the form below to book a table at AI Appetite Restaurant.</p>
 
-        <form className="booking-form">
+        <form className="booking-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
             <input type="text" className="form-control" id="name" placeholder="Enter your name" required />
@@ -29,7 +41,7 @@ const BookingPage = ({ onBack }) => {
           </div>
           <div className="form-group">
             <label htmlFor="time">Time:</label>
-            <input type="text" className="form-control" id="time" placeholder="12:30 AM" required />
+            <input type="time" className="form-control" id="time" required />
           </div>
           <div className="form-group">
             <label htmlFor="guests">Number of Guests:</label>

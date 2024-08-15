@@ -1,0 +1,26 @@
+/* SuccessPage.css */
+
+.success-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .success-container h2 {
+    font-size: 2.5rem;
+    color: #28a745;
+    margin-bottom: 20px;
+  }
+  
+  .success-container p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  .btn-primary {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+  }
+  
