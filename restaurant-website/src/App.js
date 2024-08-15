@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import './App.css';
 import backgroundImage from './assets/images/background.jpg';
+import image1 from './assets/images/about_restaurant_1.jpg';
+import image2 from './assets/images/about_restaurant_2.jpg';
 
 function App() {
   const [menuItems, setMenuItems] = useState([]);
@@ -46,8 +48,8 @@ function App() {
         <div className="container">
           <div className="about-content">
             <div className="about-images">
-              <img src="./assets/images/about_restaurant_1.jpg" alt="VicHack Restaurant" className="about-image about-image1" />
-              <img src="./assets/images/about_restaurant_2.jpg" alt="VicHack Restaurant" className="about-image about-image2" />
+              <img src={image1} alt="VicHack Restaurant" className="about-image about-image1" />
+              <img src={image2} alt="VicHack Restaurant" className="about-image about-image2" />
             </div>
             <div className="about-text">
               <div className="about-title-container">
