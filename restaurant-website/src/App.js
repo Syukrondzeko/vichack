@@ -48,16 +48,16 @@ function App() {
         <div className="container">
           <div className="about-content">
             <div className="about-images">
-              <img src={image1} alt="VicHack Restaurant" className="about-image about-image1" />
-              <img src={image2} alt="VicHack Restaurant" className="about-image about-image2" />
+              <img src={image1} alt="AI Appetite Restaurant" className="about-image about-image1" />
+              <img src={image2} alt="AI Appetite Restaurant" className="about-image about-image2" />
             </div>
             <div className="about-text">
               <div className="about-title-container">
                 <h2 className="about-title">About</h2>
-                <h3 className="about-subtitle">VicHack Restaurant</h3>
+                <h3 className="about-subtitle">AI Appetite Restaurant</h3>
               </div>
               <p>
-                VicHack Restaurant, owned by Indonesian culinary enthusiasts, offers a unique blend of global cuisines with a touch of Indonesian flavors. Our diverse menu features dishes from around the world, all infused with the rich spices and traditional cooking methods of Indonesia, creating a truly international dining experience with a local twist.
+                AI Appetite Restaurant, owned by Indonesian culinary enthusiasts, offers a unique blend of global cuisines with a touch of Indonesian flavors. Our diverse menu features dishes from around the world, all infused with the rich spices and traditional cooking methods of Indonesia, creating a truly international dining experience with a local twist.
               </p>
               <p>
                 Since our establishment in 1990, we have been committed to delivering unforgettable dining experiences, combining the warmth of Indonesian hospitality with the excitement of global culinary trends.
@@ -78,13 +78,23 @@ function App() {
                   <img src={`http://localhost:3001${item.image}`} alt={item.name} className="menu-image" />
                   <h3>{item.name}</h3>
                   <p className="menu-price">{item.price}</p>
-                  <p className="menu-quantity">{item.quantity}</p>
                 </div>
               ))
             ) : (
               <p>No menu items available.</p>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="contact-section">
+        <div className="container">
+          <h2 className="section-title">Contact Us</h2>
+          <p>If you have any questions or would like to make a reservation, feel free to reach out to us!</p>
+          <p>Email: contact@aiappetiterestaurant.com</p>
+          <p>Phone: +61-123-4567</p>
+          <p>Address: 123 Flinders Lane, Melbourne VIC 3000, Australia</p>
         </div>
       </section>
 
