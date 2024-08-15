@@ -1,26 +1,65 @@
-/* SuccessPage.css */
+/* OnlineOrderPage.css */
 
-.success-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .success-container h2 {
-    font-size: 2.5rem;
-    color: #28a745;
-    margin-bottom: 20px;
-  }
-  
-  .success-container p {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 30px;
-  }
-  
-  .btn-primary {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-  }
-  
+.online-order-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
+.online-order-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: 'Caveat', cursive;
+  font-weight: bold;
+  text-align: center; /* Keep the title centered */
+}
+
+.online-order-form p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.order-item-group {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.btn-container-small {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  margin-top: 10px; /* Add some space above the buttons */
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.875rem;
+}
+
+.ml-2 {
+  margin-left: 10px;
+}
+
+.btn-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-success {
+  padding: 10px 20px;
+}
+
+.btn-danger {
+  padding: 10px 20px;
+}
+
+.mr-2 {
+  margin-right: 10px;
+}
+
+.ml-2 {
+  margin-left: 10px;
+}

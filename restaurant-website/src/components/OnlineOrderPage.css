@@ -1,58 +1,69 @@
 /* OnlineOrderPage.css */
 
 .online-order-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .online-order-title {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 20px;
-    font-family: 'Caveat', cursive;
-    font-weight: bold;
-  }
-  
-  .online-order-form p {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 30px;
-  }
-  
-  .online-order-form .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .online-order-form label {
-    font-weight: bold;
-  }
-  
-  .online-order-form .form-control {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-  }
-  
-  .online-order-form .btn-container {
-    text-align: center;
-    margin-top: 30px;
-  }
-  
-  .online-order-form .btn-success {
-    padding: 10px 20px;
-  }
-  
-  .online-order-form .btn-danger {
-    padding: 10px 20px;
-  }
-  
-  .online-order-form .mr-2 {
-    margin-right: 10px;
-  }
-  
-  .online-order-form .ml-2 {
-    margin-left: 10px;
-  }
-  
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
+.online-order-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: 'Caveat', cursive;
+  font-weight: bold;
+  text-align: center; /* Keep the title centered */
+}
+
+.online-order-form p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.order-item-group {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.btn-container-small {
+  display: flex;
+  justify-content: center; /* Center the buttons */
+  margin-top: 10px;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.875rem;
+}
+
+.mr-2 {
+  margin-right: 10px;
+}
+
+.ml-2 {
+  margin-left: 10px;
+}
+
+.btn-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-success {
+  padding: 10px 20px;
+}
+
+.btn-danger {
+  padding: 10px 20px;
+}
+
+.mr-2 {
+  margin-right: 10px;
+}
+
+.ml-2 {
+  margin-left: 10px;
+}
