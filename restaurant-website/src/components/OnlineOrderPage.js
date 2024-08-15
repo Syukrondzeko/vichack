@@ -6,6 +6,7 @@ import './OnlineOrderPage.css';
 const OnlineOrderPage = ({ onBack }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [orderItems, setOrderItems] = useState([{ menuItem: '', quantity: '' }]);
+  const [paymentType, setPaymentType] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
@@ -102,8 +103,19 @@ const OnlineOrderPage = ({ onBack }) => {
           ))}
 
           <div className="form-group">
-            <label htmlFor="payment-id">Payment ID:</label>
-            <input type="text" className="form-control" id="payment-id" placeholder="Enter your payment ID" required />
+            <label htmlFor="payment-type">Payment Type:</label>
+            <select
+              id="payment-type"
+              className="form-control"
+              value={paymentType}
+              onChange={(e) => setPaymentType(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select a payment type</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Paypal">Paypal</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="payment-number">Payment Number:</label>
