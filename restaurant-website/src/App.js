@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import BookingPage from './components/BookingPage';
 import OnlineOrderPage from './components/OnlineOrderPage';
+import AIVoiceOrderPage from './components/AIVoiceOrderPage'; // Import the AI Voice Order Page
 import './App.css';
 import backgroundImage from './assets/images/background.jpg';
 import image1 from './assets/images/about_restaurant_1.jpg';
@@ -31,10 +32,6 @@ function App() {
       });
   }, []);
 
-  const handleBookingClick = () => {
-    setCurrentPage('booking');
-  };
-
   const handleBackToHome = () => {
     setCurrentPage('home');
   };
@@ -47,9 +44,13 @@ function App() {
     return <OnlineOrderPage onBack={handleBackToHome} />;
   }
 
+  if (currentPage === 'ai-voice-order') {
+    return <AIVoiceOrderPage onBack={handleBackToHome} />;
+  }
+
   return (
     <div className="App">
-      <Header setCurrentPage={setCurrentPage} /> {/* Pass setCurrentPage to Header */}
+      <Header setCurrentPage={setCurrentPage} />
       <section
         className="hero"
         style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -58,9 +59,6 @@ function App() {
         <div className="hero-content text-center text-white">
           <h1>Enjoy Our Delicious Meal</h1>
           <p>Experience the best dining with us.</p>
-          <button onClick={handleBookingClick} className="btn btn-warning">
-            Book a Table
-          </button>
         </div>
       </section>
 

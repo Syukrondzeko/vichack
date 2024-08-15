@@ -32,7 +32,10 @@ const Header = ({ showNavLinks = true, setCurrentPage }) => {
                     <a className="nav-link" href="#contact">Contact</a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="#" onClick={() => setCurrentPage('online-order')}>Online Order</a> {/* New NavLink */}
+                    <a className="nav-link" href="#" onClick={() => setCurrentPage('online-order')}>Online Order</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#" onClick={() => setCurrentPage('ai-voice-order')}>AI Voice Order</a> {/* New NavLink */}
                   </li>
                 </ul>
               </div>
