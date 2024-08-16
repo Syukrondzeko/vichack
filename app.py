@@ -1,9 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
-from transformers import pipeline
-import vosk
-import wave
-import json
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 import os
 from fastapi.responses import JSONResponse
 from typing import List
@@ -23,16 +21,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the Vosk model once to avoid reloading it for each request
-model_path = 'models/vosk-model-small-en-us-0.15'
-if not os.path.exists(model_path):
-    raise FileNotFoundError(f"Model path '{model_path}' not found.")
-vosk_model = vosk.Model(model_path)
-
 # Initialize model variables
 qa_pipeline = None
 sentiment_pipeline = None
-classifier = None
+classifier_model = None
+tokenizer = None
 
 # Load the QA model and tokenizer
 def load_qa_pipeline():
@@ -47,11 +40,12 @@ def load_sentiment_pipeline():
         sentiment_model_path = "models/sentiment"
         sentiment_pipeline = pipeline("sentiment-analysis", model=sentiment_model_path, framework='pt')
 
-def load_classifier():
-    global classifier
-    if classifier is None:
-        classifier_model_path = "models/classifier"
-        classifier = pipeline("zero-shot-classification", model=classifier_model_path, framework='pt')
+def load_classifier_model():
+    global classifier_model, tokenizer
+    if classifier_model is None:
+        classifier_model_path = "models/fine_tuned_distilbart_mnli"
+        classifier_model = AutoModelForSequenceClassification.from_pretrained(classifier_model_path)
+        tokenizer = AutoTokenizer.from_pretrained(classifier_model_path)
 
 # Define data models for chatbot
 class UserMoodRequest(BaseModel):
@@ -189,9 +183,9 @@ async def ask_price(request: PriceRequest):
 
 @app.post("/end_chat/")
 async def order_summary(chat_request: EndChatRequest):
-    global classifier
+    global classifier_model
 
-    load_classifier()
+    load_classifier_model()
 
     user_input = chat_request.is_end_chat.strip().lower()
     if check_conversation_end(user_input):
@@ -203,28 +197,41 @@ async def order_summary(chat_request: EndChatRequest):
 
 @app.post("/classify_intent/")
 async def classify_intent(chat_request: ClassificationRequest):
-    global classifier
+    global classifier_model, tokenizer
 
-    load_classifier()
+    load_classifier_model()
 
     user_input = chat_request.user_input.strip().lower()
     
-    # Print the input for debugging
-    print(f"Received input for intent classification: '{user_input}'")
+    # Tokenize the input
+    inputs = tokenizer(user_input, return_tensors="pt", truncation=True, padding=True)
 
-    label = classify_user_input(user_input)
+    # Ensure model is in evaluation mode
+    classifier_model.eval()
 
-    if label == "asking_availability_menu":
+    # Perform prediction
+    with torch.no_grad():
+        outputs = classifier_model(**inputs)
+        logits = outputs.logits
+
+    # Get the predicted label
+    predicted_class_id = torch.argmax(logits, dim=-1).item()
+
+    # Define the label names in the same order as they were used in training
+    label_names = ["asking_availability_menu", "asking_price", "order_menu", "quantity_order", "giving_address", "cancel_order"]
+    predicted_label = label_names[predicted_class_id]
+
+    if predicted_label == "asking_availability_menu":
         response = "It seems like you're asking about the available menu items."
-    elif label == "order_menu":
+    elif predicted_label == "order_menu":
         response = "It looks like you're trying to place an order."
-    elif label == "quantity_order":
+    elif predicted_label == "quantity_order":
         response = "It seems like you're specifying the quantity for your order."
-    elif label == "asking_price":
+    elif predicted_label == "asking_price":
         response = "It seems like you're asking for menu price."
-    elif label == "cancel_order":
+    elif predicted_label == "cancel_order":
         response = "It seems like you want to cancel your order."
-    elif label == "giving_address":
+    elif predicted_label == "giving_address":
         response = "It seems like you are giving your address."
     else:
         response = "I'm not sure what you're asking. Could you please clarify?"
@@ -243,45 +250,6 @@ async def giving_address(request: AddressRequest):
     address = address.strip()
 
     return AddressResponse(address=address)
-
-@app.post("/transcribe/")
-async def transcribe(file: UploadFile = File(...)):
-    # Check if the uploaded file is a WAV file
-    if not file.filename.endswith(".wav"):
-        raise HTTPException(status_code=400, detail="Only WAV files are supported.")
-
-    # Save the uploaded file temporarily
-    temp_file_path = f"temp_{file.filename}"
-    with open(temp_file_path, "wb") as buffer:
-        buffer.write(await file.read())
-
-    # Open the WAV file and process it
-    try:
-        with wave.open(temp_file_path, "rb") as wf:
-            # Check if the WAV file has the expected format
-            if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != 'NONE':
-                raise HTTPException(status_code=400, detail="Audio file must be WAV format mono PCM.")
-
-            # Initialize the recognizer with the sample rate from the WAV file
-            recognizer = vosk.KaldiRecognizer(vosk_model, wf.getframerate())
-
-            # Read the audio data and process it
-            while True:
-                data = wf.readframes(4000)  # Read data in chunks
-                if len(data) == 0:
-                    break
-                recognizer.AcceptWaveform(data)
-
-            # Get the final result
-            final_result = recognizer.FinalResult()
-            text = json.loads(final_result).get("text", "")
-            return JSONResponse(content={"recognized_text": text})
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred while processing the file: {str(e)}")
-    finally:
-        # Clean up the temporary file
-        if os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
 
 # Helper functions for the chatbot
 def ask_question(context, question):
@@ -305,7 +273,7 @@ def generate_response(sentiment):
         return "Thanks for sharing. What do you want to order today?"
 
 def check_conversation_end(user_input):
-    classification_result = classifier(
+    classification_result = classifier_model(
         user_input,
         candidate_labels=["end conversation", "continue conversation"],
         hypothesis_template="This statement is about {}."
@@ -314,7 +282,7 @@ def check_conversation_end(user_input):
     return label == "end conversation"
 
 def classify_user_input(user_input):
-    classification_result = classifier(
+    classification_result = classifier_model(
         user_input,
         candidate_labels=["asking_availability_menu", "asking_price", "order_menu", "quantity_order", "giving_address", "cancel_order"],
         hypothesis_template="The user is {}."
