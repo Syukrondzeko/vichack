@@ -72,10 +72,17 @@ const AIVoiceOrderPage = ({ onBack }) => {
       .then((response) => response.json())
       .then((data) => {
         setIntentResponse(data.response); // Store the classification result in the state
+        speakText(data.response); // Emit the sound for the response
       })
       .catch((error) => {
         console.error('Error in classify_intent:', error);
       });
+  };
+
+  const speakText = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    window.speechSynthesis.speak(utterance);
   };
 
   return (

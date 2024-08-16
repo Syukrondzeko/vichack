@@ -208,6 +208,10 @@ async def classify_intent(chat_request: ClassificationRequest):
     load_classifier()
 
     user_input = chat_request.user_input.strip().lower()
+    
+    # Print the input for debugging
+    print(f"Received input for intent classification: '{user_input}'")
+
     label = classify_user_input(user_input)
 
     if label == "asking_availability_menu":
@@ -226,6 +230,7 @@ async def classify_intent(chat_request: ClassificationRequest):
         response = "I'm not sure what you're asking. Could you please clarify?"
 
     return {"response": response}
+
 
 @app.post("/giving_address/", response_model=AddressResponse)
 async def giving_address(request: AddressRequest):
