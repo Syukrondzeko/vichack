@@ -32,7 +32,11 @@ curl -X POST "http://127.0.0.1:8000/classify_intent/" \
 
 curl -X POST "http://127.0.0.1:8000/classify_intent/" \
      -H "Content-Type: application/json" \
-     -d '{"user_input": "I want mozarella pizza."}'        
+     -d '{"user_input": "Plase tell me the menu"}'    
+
+curl -X POST "http://127.0.0.1:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "I want a pizza."}'          
 
 curl -X POST "http://127.0.0.1:8000/classify_intent/" \
      -H "Content-Type: application/json" \
@@ -40,11 +44,19 @@ curl -X POST "http://127.0.0.1:8000/classify_intent/" \
 
 curl -X POST "http://localhost:8000/classify_intent/" \
      -H "Content-Type: application/json" \
-     -d '{"user_input": "I want to delete the chicken."}'
+     -d '{"user_input": "I changed my mind, I want to cancel the pizza."}'
 
 curl -X POST "http://localhost:8000/classify_intent/" \
      -H "Content-Type: application/json" \
-     -d '{"user_input": "How much expensive is spagethi?"}'
+     -d '{"user_input": "What is the price of Spaghetti?"}'
+
+curl -X POST "http://localhost:8000/classify_intent/" \
+     -H "Content-Type: application/json" \
+     -d '{"user_input": "That is all"}'
+
+curl -X POST "http://localhost:8000/end_chat/" \
+     -H "Content-Type: application/json" \
+     -d '{"is_end_chat": "That is all"}'
 
 curl -X POST "http://127.0.0.1:8000/ask_price/" \
      -H "Content-Type: application/json" \

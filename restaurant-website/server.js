@@ -28,16 +28,16 @@ db.serialize(() => {
   const stmt = db.prepare("INSERT INTO menu (name, image, price, quantity) VALUES (?, ?, ?, ?)");
 
   const menuItems = [
-    ["Klepon Cheesecake", "/assets/images/menu_1.webp", "$6.99", "21"],
-    ["Rendang Beef Burgers", "/assets/images/menu_2.webp", "$12.99", "31"],
-    ["Mie Goreng Stir-Fry", "/assets/images/menu_3.webp", "$9.99", "11"],
-    ["Indonesian Meatball Soup", "/assets/images/menu_4.webp", "$7.99", "21"],
-    ["Ayam Bakar Teriyaki", "/assets/images/menu_5.webp", "$11.99", "12"],
+    ["Cheesecake", "/assets/images/menu_1.webp", "$6.99", "21"],
+    ["Beef Burgers", "/assets/images/menu_2.webp", "$12.99", "31"],
+    ["Fried Noodle", "/assets/images/menu_3.webp", "$9.99", "11"],
+    ["Meatball Soup", "/assets/images/menu_4.webp", "$7.99", "21"],
+    ["Chicken Teriyaki", "/assets/images/menu_5.webp", "$11.99", "12"],
     ["Sambal Chicken Wings", "/assets/images/menu_6.webp", "$8.99", "16"],
-    ["Nasi Uduk with Grilled Fish", "/assets/images/menu_7.webp", "$10.99", "13"],
-    ["Katsu Curry with Nasi", "/assets/images/menu_8.webp", "$13.99", "11"],
-    ["Nasi Campur Bowl", "/assets/images/menu_9.webp", "$9.99", "12"],
-    ["Balinese Spiced Veggie Pizza", "/assets/images/menu_10.webp", "$14.99", "12"]
+    ["Grilled Fish", "/assets/images/menu_7.webp", "$10.99", "13"],
+    ["Katsu Curry", "/assets/images/menu_8.webp", "$13.99", "11"],
+    ["Mixed Rice Bowl", "/assets/images/menu_9.webp", "$9.99", "12"],
+    ["Veggie Pizza", "/assets/images/menu_10.webp", "$14.99", "12"]
   ];
 
   menuItems.forEach(item => {

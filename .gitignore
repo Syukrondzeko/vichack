@@ -12,6 +12,7 @@ __pycache__/
 # Files
 models/
 # restaurant-website/
+backend/repository/database/
 
 # Node modules
 node_modules/
