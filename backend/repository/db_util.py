@@ -86,6 +86,8 @@ def drop_all() -> None:
         )
 
 def init_db() -> None:
+    # Create file if it doesn't exists
+    open(DB_URL, "w")
     drop_all()
     create_tables_and_populate()
 
